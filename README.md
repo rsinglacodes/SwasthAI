@@ -37,6 +37,7 @@ SwasthAI is a **multimodal AI-powered healthcare web application** that predicts
 ## 📸 Project Screenshots & Insights
 
 ### 🧠 Disease Prediction Dashboard
+(screenshots/prediction.png)
 ✔ Predicts disease using symptoms + AI  
 ✔ Shows confidence score  
 ✔ Provides explanation (why this disease)  
@@ -53,6 +54,7 @@ SwasthAI is a **multimodal AI-powered healthcare web application** that predicts
 ---
 
 ### 💬 AI Chat Assistant
+(screenshots/chat.png)
 
 ✔ Ask health-related questions  
 ✔ Get precautions, diet, and guidance  
@@ -61,7 +63,7 @@ SwasthAI is a **multimodal AI-powered healthcare web application** that predicts
 ---
 
 ### 🏥 Treatment & Awareness Section
-
+(screenshots/index.png)
 ✔ Step-by-step treatment guidance  
 ✔ Diet recommendations  
 ✔ Healthcare awareness (vaccines, etc.)  
