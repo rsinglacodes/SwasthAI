@@ -34,7 +34,40 @@ SwasthAI is a **multimodal AI-powered healthcare web application** that predicts
 * View history via UI
 
 ---
+## 📸 Project Screenshots & Insights
 
+### 🧠 Disease Prediction Dashboard
+✔ Predicts disease using symptoms + AI  
+✔ Shows confidence score  
+✔ Provides explanation (why this disease)  
+✔ Combines image + symptom intelligence  
+
+---
+
+### 🖼️ Medical Image Analysis
+✔ Upload medical image (skin, etc.)  
+✔ AI analyzes and predicts condition  
+✔ Confidence score for image model  
+✔ Fused with symptom prediction  
+
+---
+
+### 💬 AI Chat Assistant
+
+✔ Ask health-related questions  
+✔ Get precautions, diet, and guidance  
+✔ Smart suggestions based on disease  
+
+---
+
+### 🏥 Treatment & Awareness Section
+
+✔ Step-by-step treatment guidance  
+✔ Diet recommendations  
+✔ Healthcare awareness (vaccines, etc.)  
+✔ Preventive measures  
+
+---
 ## 🛠️ Tech Stack
 
 * **Frontend:** HTML, CSS
