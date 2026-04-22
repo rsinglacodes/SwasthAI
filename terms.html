@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwasthAI Terms & Support</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #e6f7f2, #f5fffc);
+}
+
+/* NAV */
+nav {
+    background: #10b981;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* HEADINGS */
+h2 {
+    color: #059669;
+    margin-bottom: 10px;
+}
+
+/* TERMS BOX */
+.terms-box {
+    height: 250px;
+    overflow-y: scroll;
+    background: #f1fdf9;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #d1fae5;
+    font-size: 14px;
+}
+
+/* BUTTON */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background: #10b981;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* SUPPORT FORM */
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.success {
+    color: green;
+    display: none;
+    margin-top: 10px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    padding: 10px;
+    color: gray;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h3>SwasthAI</h3>
+    <span><a href="/auth">Back to register</a></span>
+</nav>
+
+<div class="container">
+
+    <!-- TERMS -->
+    <div class="card">
+        <h2>Terms & Conditions</h2>
+
+        <div class="terms-box">
+            <p>
+            Welcome to SwasthAI. By using this platform, you agree to the following terms:
+            <br><br>
+            1. SwasthAI provides AI-based health suggestions and is not a replacement for professional medical advice.
+            <br><br>
+            2. The predictions are based on data and models and may not always be accurate.
+            <br><br>
+            3. Users should consult a doctor for serious conditions.
+            <br><br>
+            4. We do not store sensitive personal data on external servers (offline-first design).
+            <br><br>
+            5. By continuing, you agree to use the platform responsibly.
+            </p>
+        </div>
+
+        <button onclick="acceptTerms()">Accept Terms</button>
+        <p id="acceptMsg" class="success">✔ Terms Accepted</p>
+    </div>
+
+    <!-- SUPPORT -->
+    <div class="card">
+        <h2>Support / Help</h2>
+
+        <form onsubmit="sendMessage(event)">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" rows="4" placeholder="Describe your issue..." required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <p id="msgSent" class="success">✔ Message saved successfully!</p>
+    </div>
+
+</div>
+
+<div class="footer">
+    © 2026 SwasthAI | Smart Healthcare Assistant
+</div>
+
+<script>
+// ACCEPT TERMS
+function acceptTerms(){
+    localStorage.setItem("termsAccepted", "yes");
+    document.getElementById("acceptMsg").style.display = "block";
+}
+
+// SUPPORT MESSAGE (offline save)
+function sendMessage(e){
+    e.preventDefault();
+
+    let msg = {
+        name: name.value,
+        email: email.value,
+        message: message.value
+    };
+
+    let allMessages = JSON.parse(localStorage.getItem("support")) || [];
+    allMessages.push(msg);
+
+    localStorage.setItem("support", JSON.stringify(allMessages));
+
+    document.getElementById("msgSent").style.display = "block";
+    e.target.reset();
+}
+</script>
+
+</body>
+</html>

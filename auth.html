@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SwasthAI — Authentication</title>
+    <style>
+        :root {
+            --green-50: #ecfdf5;
+            --green-100: #d1fae5;
+            --green-500: #10b981;
+            --green-600: #059669;
+            --green-700: #047857;
+            --ink: #0f172a;
+            --ink-2: #334155;
+            --muted: #64748b;
+            --line: #e2e8f0;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --danger: #ef4444;
+            --warn: #f59e0b;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(2, 6, 23, .08);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            color: var(--ink);
+            background: var(--bg)
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background:
+                radial-gradient(1200px 600px at 90% -10%, #d1fae5 0%, transparent 60%),
+                radial-gradient(900px 500px at -10% 110%, #bbf7d0 0%, transparent 55%),
+                radial-gradient(circle at 1px 1px, rgba(15, 23, 42, .06) 1px, transparent 0) 0 0/22px 22px,
+                var(--bg);
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 1040px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            box-shadow: 0 6px 16px rgba(16, 185, 129, .35)
+        }
+
+        .brand h1 {
+            font-size: 20px;
+            margin: 0;
+            letter-spacing: .2px
+        }
+
+        .brand small {
+            color: var(--muted)
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr
+        }
+
+        @media (max-width: 880px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .hero {
+                display: none
+            }
+        }
+
+        .hero {
+            position: relative;
+            padding: 36px;
+            color: #06281f;
+            background: linear-gradient(160deg, #a7f3d0 0%, #6ee7b7 50%, #34d399 100%);
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            line-height: 1.2;
+            margin: 6px 0 10px
+        }
+
+        .hero p {
+            color: #0b3b2c;
+            opacity: .85;
+            margin: 0 0 18px
+        }
+
+        .features {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px
+        }
+
+        .feat {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, .65);
+            border: 1px solid rgba(255, 255, 255, .8);
+            padding: 10px 12px;
+            border-radius: 12px
+        }
+
+        .feat .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green-700);
+            margin-top: 8px
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffffaa;
+            border: 1px solid #ffffff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            color: #065f46;
+            font-weight: 600
+        }
+
+        .hero .pill {
+            position: absolute;
+            right: 24px;
+            top: 24px;
+            background: #ffffffd9;
+            border: 1px solid #fff;
+            color: #065f46;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700
+        }
+
+        .panel {
+            padding: 30px
+        }
+
+        .tabs {
+            display: flex;
+            background: #f1f5f9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 18px
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--ink-2);
+            font-weight: 600;
+            font-size: 14px
+        }
+
+        .tab.active {
+            background: #fff;
+            color: var(--green-700);
+            box-shadow: 0 4px 12px rgba(2, 6, 23, .06)
+        }
+
+        .title {
+            font-size: 22px;
+            margin: 6px 0 4px
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin: 0 0 18px;
+            font-size: 14px
+        }
+
+        .field {
+            margin-bottom: 14px
+        }
+
+        .label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-2);
+            margin-bottom: 6px
+        }
+
+        .label .opt {
+            font-weight: 500;
+            color: var(--muted);
+            font-size: 12px;
+            margin-left: 6px
+        }
+
+        .input,
+        .select,
+        .textarea {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #fff;
+            font-size: 14px;
+            color: var(--ink);
+            transition: border .15s, box-shadow .15s;
+        }
+
+        .select,
+        .textarea {
+            padding-left: 12px
+        }
+
+        .textarea {
+            min-height: 70px;
+            resize: vertical
+        }
+
+        .input:focus,
+        .select:focus,
+        .textarea:focus {
+            outline: none;
+            border-color: var(--green-500);
+            box-shadow: 0 0 0 4px #d1fae5
+        }
+
+        .input-wrap {
+            position: relative
+        }
+
+        .icn {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            width: 18px;
+            height: 18px
+        }
+
+        .right-act {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: 0;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px
+        }
+
+        .row-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px
+        }
+
+        @media (max-width:520px) {
+
+            .row,
+            .row-3,
+            .row-4 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px 14px;
+            border: 0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--green-500), var(--green-700));
+            color: #fff;
+            box-shadow: 0 8px 18px rgba(16, 185, 129, .35);
+            transition: transform .05s ease, box-shadow .15s ease, opacity .2s;
+        }
+
+        .btn:hover {
+            box-shadow: 0 10px 22px rgba(16, 185, 129, .45)
+        }
+
+        .btn:active {
+            transform: translateY(1px)
+        }
+
+        .btn.ghost {
+            background: #fff;
+            color: var(--ink);
+            border: 1px solid var(--line);
+            box-shadow: none
+        }
+
+        .btn.ghost:hover {
+            background: #f8fafc
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 12px;
+            margin: 14px 0
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--line)
+        }
+
+        .social {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .social .btn.ghost {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px
+        }
+
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink-2);
+            font-size: 13px
+        }
+
+        .link {
+            color: var(--green-700);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px
+        }
+
+        .link:hover {
+            text-decoration: underline
+        }
+
+        .switch {
+            margin-top: 14px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            border-radius: 999px;
+            font-size: 13px;
+            color: var(--ink-2);
+            cursor: pointer;
+            user-select: none;
+            font-weight: 600;
+            transition: all .15s;
+        }
+
+        .chip:hover {
+            border-color: #cbd5e1
+        }
+
+        .chip.active {
+            background: var(--green-50);
+            border-color: var(--green-500);
+            color: var(--green-700)
+        }
+
+        .section {
+            border: 1px dashed var(--line);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+            background: #fafafa
+        }
+
+        .section h3 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: var(--ink);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .section h3 .tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--green-700);
+            background: var(--green-50);
+            border: 1px solid var(--green-100);
+            padding: 2px 8px;
+            border-radius: 999px
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin: -4px 0 10px
+        }
+
+        .footer-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center
+        }
+
+        .hidden {
+            display: none
+        }
+
+        .reveal {
+            margin-top: 10px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="brand">
+            <div class="logo">S</div>
+            <div>
+                <h1>SwasthAI</h1>
+                <small>Your personal AI health companion</small>
+            </div>
+        </div>
+
+        <div class="card grid">
+            <aside class="hero">
+                <span class="pill">Secure • Private</span>
+                <span class="badge">🌿 Health-first design</span>
+                <h2>Welcome to SwasthAI</h2>
+                <p>Sign in to track your health, get personalized insights, and chat with our AI assistant trained for
+                    Indian healthcare needs.</p>
+
+                <div class="features">
+                    <div class="feat"><span class="dot"></span>
+                        <div><strong>Personalized risk insights</strong><br /><small>Based on your profile, lifestyle
+                                and history</small></div>
+                    </div>
+                    <div class="feat"><span class="dot"></span>
+                        <div><strong>Symptom &amp; medication helper</strong><br /><small>Quick guidance, not a
+                                substitute for a doctor</small></div>
+                    </div>
+                    <div class="feat"><span class="dot"></span>
+                        <div><strong>End-to-end encrypted</strong><br /><small>Your data stays yours</small></div>
+                    </div>
+                </div>
+            </aside>
+
+
+
+            <section class="panel">
+                <div class="tabs" role="tablist">
+                    <div id="tab-login" class="tab active" onclick="switchTab('login')">Sign In</div>
+                    <div id="tab-register" class="tab" onclick="switchTab('register')">Register</div>
+                </div>
+
+                
+
+
+                <!-- LOGIN -->
+                <div id="login">
+                    <h2 class="title">Welcome back 👋</h2>
+                    <p class="subtitle">Sign in with your phone number. Email is optional.</p>
+
+                    <form action="/login" method="POST">
+                        <div class="field">
+                            <label class="label" for="loginPhone">Phone Number</label>
+                            <div class="input-wrap">
+                                <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z" />
+                                </svg>
+                                <input name="mobile" id="loginPhone" class="input" type="tel"
+                                    placeholder="+91 98XXXXXX21" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="loginEmail">Email <span class="opt"></span></label>
+                            <div class="input-wrap">
+                                <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16v16H4z" />
+                                    <path d="m22 6-10 7L2 6" />
+                                </svg>
+                                <input name="email" id="loginEmail" class="input" type="email"
+                                    placeholder="you@example.com" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="loginPw">Password</label>
+                            <div class="input-wrap">
+                                <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                </svg>
+                                <input name="password" id="loginPw" class="input" type="password"
+                                    placeholder="Enter your password" />
+                                <button type="button" class="right-act"
+                                    onclick="togglePw('loginPw', this)">Show</button>
+                            </div>
+                        </div>
+
+                        <div class="meta">
+                            <label class="check"><input type="checkbox" name="remember" /> Remember me</label>
+                            <a href="#" class="link">Forgot password?</a>
+                        </div>
+
+                        <div style="height:14px"></div>
+                        <button type="submit" class="btn">Sign in</button>
+                    </form>
+
+                    <div class="divider">or continue with</div>
+                    <!-- <div class="social">
+                        <button type="button" class="btn ghost">🟢 Google</button>
+                        <button type="button" class="btn ghost">🪪 DigiLocker</button>
+                    </div> -->
+
+                    <p class="switch">New to SwasthAI? <a class="link" onclick="switchTab('register')">Create an
+                            account</a></p>
+                </div>
+
+                <!-- REGISTER -->
+                <div id="register" class="hidden">
+                    <form action="/signup" method="POST" id="registerForm">
+                        <h2 class="title">Create your account</h2>
+                        <p class="subtitle">A few quick details help us personalize your health insights.</p>
+
+                        <div class="section">
+                            <h3>👤 Basic Information</h3>
+                            <div class="field">
+                                <label class="label" for="rName">Full Name</label>
+                                <div class="input-wrap">
+                                    <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="8" r="4" />
+                                        <path d="M4 21a8 8 0 0 1 16 0" />
+                                    </svg>
+                                    <input name="name" id="rName" class="input" placeholder="Full Name" required />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="field">
+                                    <label class="label" for="rPhone">Phone Number</label>
+                                    <div class="input-wrap">
+                                        <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path
+                                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z" />
+                                        </svg>
+                                        <input name="mobile" id="rPhone" class="input" type="tel"
+                                            placeholder="+91 98XXXXXX21" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="rEmail">Email <span class="opt">(optional)</span></label>
+                                    <div class="input-wrap">
+                                        <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M4 4h16v16H4z" />
+                                            <path d="m22 6-10 7L2 6" />
+                                        </svg>
+                                        <input name="email" id="rEmail" class="input" type="email"
+                                            placeholder="you@example.com" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label" for="rPw">Password</label>
+                                <div class="input-wrap">
+                                    <svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" />
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                    </svg>
+                                    <input name="password" id="rPw" class="input" type="password"
+                                        placeholder="Create a strong password" required />
+                                    <button type="button" class="right-act"
+                                        onclick="togglePw('rPw', this)">Show</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <h3>📏 Body Metrics</h3>
+                            <div class="field">
+                                <label class="label">Gender</label>
+                                <div class="chips" data-single="gender">
+                                    <span class="chip" data-value="male" onclick="pickSingle(this)">Male</span>
+                                    <span class="chip" data-value="female" onclick="pickSingle(this)">Female</span>
+                                    <span class="chip" data-value="other" onclick="pickSingle(this)">Other</span>
+                                    <span class="chip" data-value="prefer_not_to_say" onclick="pickSingle(this)">Prefer
+                                        not to say</span>
+                                </div>
+                                <input type="hidden" name="gender" id="genderInput" />
+                            </div>
+
+                            <div class="row-4">
+                                <div class="field">
+                                    <label class="label" for="rAge">Age</label>
+                                    <input name="age" id="rAge" class="select" type="number" placeholder="e.g. 25"
+                                        min="1" max="120" />
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="rHeight">Height (cm)</label>
+                                    <input name="height" id="rHeight" class="select" type="number"
+                                        placeholder="e.g. 170" />
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="rWeight">Weight (kg)</label>
+                                    <input name="weight" id="rWeight" class="select" type="number"
+                                        placeholder="e.g. 65" />
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="rBlood">Blood Group</label>
+                                    <select name="blood_group" id="rBlood" class="select">
+                                        <option value="">Select…</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                        <option value="unknown">Don't know</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <h3>🩺 Do you have any of the following? <span class="tag">multi-select</span></h3>
+                            <p class="hint">Tap all that apply. Choose "None" if not applicable.</p>
+                            <div class="chips" data-multi="conditions">
+                                <span class="chip" data-value="diabetes" onclick="pickMulti(this)">Diabetes</span>
+                                <span class="chip" data-value="high_bp" onclick="pickMulti(this)">High Blood
+                                    Pressure</span>
+                                <span class="chip" data-value="heart_disease" onclick="pickMulti(this)">Heart
+                                    Disease</span>
+                                <span class="chip" data-value="asthma" onclick="pickMulti(this)">Asthma</span>
+                                <span class="chip" data-value="thyroid" onclick="pickMulti(this)">Thyroid</span>
+                                <span class="chip" data-value="kidney_disease" onclick="pickMulti(this)">Kidney
+                                    Disease</span>
+                                <span class="chip" data-value="none" onclick="pickMulti(this)" data-none="1">None</span>
+                            </div>
+                            <input type="hidden" name="conditions" id="conditionsInput" />
+                        </div>
+
+                        <div class="section">
+                            <h3>🏃 Lifestyle</h3>
+                            <div class="row">
+                                <div class="field">
+                                    <label class="label">Smoking</label>
+                                    <div class="chips" data-single="smoking">
+                                        <span class="chip" data-value="yes" onclick="pickSingle(this)">Yes</span>
+                                        <span class="chip" data-value="no" onclick="pickSingle(this)">No</span>
+                                    </div>
+                                    <input type="hidden" name="smoking" id="smokingInput" />
+                                </div>
+                                <div class="field">
+                                    <label class="label">Alcohol</label>
+                                    <div class="chips" data-single="alcohol">
+                                        <span class="chip" data-value="yes" onclick="pickSingle(this)">Yes</span>
+                                        <span class="chip" data-value="no" onclick="pickSingle(this)">No</span>
+                                    </div>
+                                    <input type="hidden" name="alcohol" id="alcoholInput" />
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Physical Activity</label>
+                                <div class="chips" data-single="activity">
+                                    <span class="chip" data-value="low" onclick="pickSingle(this)">Low</span>
+                                    <span class="chip" data-value="moderate" onclick="pickSingle(this)">Moderate</span>
+                                    <span class="chip" data-value="high" onclick="pickSingle(this)">High</span>
+                                </div>
+                                <input type="hidden" name="activity" id="activityInput" />
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <h3>💊 Medications <span class="tag"></span></h3>
+                            <label class="label">Are you on regular medication?</label>
+                            <div class="chips" data-single="meds" id="medsChips">
+                                <span class="chip" data-value="yes"
+                                    onclick="pickSingle(this); toggleMeds(this)">Yes</span>
+                                <span class="chip" data-value="no"
+                                    onclick="pickSingle(this); toggleMeds(this)">No</span>
+                            </div>
+                            <input type="hidden" name="on_medication" id="medsInput" />
+                            <div id="medsBox" class="reveal hidden">
+                                <label class="label" for="rMeds">Medicine names</label>
+                                <textarea name="medications" id="rMeds" class="textarea"
+                                    placeholder="e.g. Metformin 500mg, Telmisartan 40mg"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <h3>👨‍👩‍👧 Family History <span class="tag"></span></h3>
+                            <p class="hint">Conditions in close family (parents/siblings).</p>
+                            <div class="chips" data-multi="family">
+                                <span class="chip" data-value="diabetes" onclick="pickMulti(this)">Diabetes</span>
+                                <span class="chip" data-value="heart_disease" onclick="pickMulti(this)">Heart
+                                    Disease</span>
+                                <span class="chip" data-value="cancer" onclick="pickMulti(this)">Cancer</span>
+                            </div>
+                            <input type="hidden" name="family_history" id="familyInput" />
+                        </div>
+
+                        <label class="check" style="margin:6px 0 12px">
+                            <input type="checkbox" id="agree" required /> I agree to the
+                            <a class="link" href="/terms" target="_blank">Terms &amp Privacy Policy</a>
+                            <!-- <a class="link" href="/privacy" target="_blank">Privacy Policy</a> -->
+                        </label>
+
+                        <button type="submit" class="btn">Create Account</button>
+
+                    </form>
+
+                    <div class="divider">or sign up with</div>
+                    <div class="social">
+                        <button type="button" class="btn ghost">🟢 Google</button>
+                        <button type="button" class="btn ghost">🪪 DigiLocker</button>
+                    </div>
+
+                    <p class="switch">Already have an account? <a class="link" onclick="switchTab('login')">Sign in</a>
+                    </p>
+                </div>
+
+                <p class="footer-note">© SwasthAI • Built with care for your health</p>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(which) {
+            const login = document.getElementById('login');
+            const reg = document.getElementById('register');
+            const tL = document.getElementById('tab-login');
+            const tR = document.getElementById('tab-register');
+            if (which === 'login') {
+                login.classList.remove('hidden');
+                reg.classList.add('hidden');
+                tL.classList.add('active');
+                tR.classList.remove('active');
+            } else {
+                reg.classList.remove('hidden');
+                login.classList.add('hidden');
+                tR.classList.add('active');
+                tL.classList.remove('active');
+            }
+        }
+
+        function togglePw(id, btn) {
+            const el = document.getElementById(id);
+            if (el.type === 'password') {
+                el.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                el.type = 'password';
+                btn.textContent = 'Show';
+            }
+        }
+
+        function pickSingle(chip) {
+            const group = chip.parentElement;
+            group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+
+            // Update corresponding hidden input
+            const singleKey = group.dataset.single;
+            const value = chip.dataset.value || chip.textContent.trim().toLowerCase();
+            const hiddenInput = document.getElementById(singleKey + 'Input');
+            if (hiddenInput) {
+                hiddenInput.value = value;
+            }
+        }
+
+        function pickMulti(chip) {
+            const group = chip.parentElement;
+            const isNone = chip.dataset.none === '1';
+
+            if (isNone) {
+                const wasActive = chip.classList.contains('active');
+                group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                if (!wasActive) chip.classList.add('active');
+            } else {
+                group.querySelectorAll('.chip').forEach(c => {
+                    if (c.dataset.none === '1') c.classList.remove('active');
+                });
+                chip.classList.toggle('active');
+            }
+
+            // Update corresponding hidden input with comma-separated values
+            const multiKey = group.dataset.multi;
+            const hiddenInput = document.getElementById(multiKey + 'Input');
+            if (hiddenInput) {
+                const selected = Array.from(group.querySelectorAll('.chip.active'))
+                    .map(c => c.dataset.value || c.textContent.trim().toLowerCase());
+                hiddenInput.value = selected.join(',');
+            }
+        }
+
+        function toggleMeds(chip) {
+            const box = document.getElementById('medsBox');
+            const value = chip.dataset.value || chip.textContent.trim().toLowerCase();
+            if (value === 'yes') {
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        // Form validation before submit
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            if (!document.getElementById('agree').checked) {
+                e.preventDefault();
+                alert('Please accept the Terms & Privacy Policy to continue.');
+                return false;
+            }
+        });
+    </script>
+</body>
+
+</html>
